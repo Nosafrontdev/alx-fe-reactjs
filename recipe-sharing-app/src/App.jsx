@@ -6,6 +6,7 @@ import RecipeDetails from './components/RecipeDetails';
 function App() {
   return (
     <Routes>
+      {/* Home route */}
       <Route
         path="/"
         element={
@@ -16,6 +17,8 @@ function App() {
           </>
         }
       />
+
+      {/* Recipe details route */}
       <Route path="/recipes/:id" element={<RecipeDetails />} />
     </Routes>
   );
