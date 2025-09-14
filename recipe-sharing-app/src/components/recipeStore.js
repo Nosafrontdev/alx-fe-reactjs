@@ -6,16 +6,23 @@ export const useRecipeStore = create((set, get) => ({
     { id: 2, title: "Fried Plantain", description: "Sweet and crispy plantain slices" },
     { id: 3, title: "Egusi Soup", description: "Nigerian melon seed soup" },
   ],
-  searchTerm: "",
-  setSearchTerm: (term) => {
-    set({ searchTerm: term });
-    get().filterRecipes();
-  },
-  filteredRecipes: [],
-  filterRecipes: () =>
+  favorites: [],
+  addFavorite: (recipeId) =>
     set((state) => ({
-      filteredRecipes: state.recipes.filter((recipe) =>
-        recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
-      ),
+      favorites: [...new Set([...state.favorites, recipeId])], // prevents duplicates
     })),
+  removeFavorite: (recipeId) =>
+    set((state) => ({
+      favorites: state.favorites.filter((id) => id !== recipeId),
+    })),
+  recommendations: [],
+  generateRecommendations: () =>
+    set((state) => {
+      // Mock logic: Recommend random recipes not already in favorites
+      const recommended = state.recipes.filter(
+        (recipe) =>
+          !state.favorites.includes(recipe.id) && Math.random() > 0.5
+      );
+      return { recommendations: recommended };
+    }),
 }));
