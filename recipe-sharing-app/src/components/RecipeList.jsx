@@ -1,3 +1,5 @@
+// src/components/RecipeList.jsx
+import { Link } from "react-router-dom";
 import { useRecipeStore } from "./recipeStore";
 
 const RecipeList = () => {
@@ -12,7 +14,13 @@ const RecipeList = () => {
         {recipes.length > 0 ? (
           recipes.map((recipe) => (
             <li key={recipe.id}>
-              <strong>{recipe.title}</strong> - {recipe.description}
+              <Link
+                to={`/recipe/${recipe.id}`}
+                style={{ textDecoration: "none", color: "blue" }}
+              >
+                <strong>{recipe.title}</strong>
+              </Link>
+              <p>{recipe.description}</p>
             </li>
           ))
         ) : (
