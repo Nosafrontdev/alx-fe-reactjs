@@ -1,15 +1,19 @@
-import create from 'zustand'
+// src/components/recipeStore.js
+import create from "zustand";
 
 const useRecipeStore = create((set) => ({
   recipes: [],
 
-  // Add a new recipe
+  // --- search state ---
+  searchTerm: "",
+  setSearchTerm: (term) => set({ searchTerm: term }),
+
+  // --- actions ---
   addRecipe: (newRecipe) =>
     set((state) => ({
       recipes: [...state.recipes, newRecipe],
     })),
 
-  // Update an existing recipe by id
   updateRecipe: (updatedRecipe) =>
     set((state) => ({
       recipes: state.recipes.map((recipe) =>
@@ -17,13 +21,11 @@ const useRecipeStore = create((set) => ({
       ),
     })),
 
-  // Delete a recipe by id
   deleteRecipe: (id) =>
     set((state) => ({
       recipes: state.recipes.filter((recipe) => recipe.id !== id),
     })),
 
-  // Replace all recipes (if needed)
   setRecipes: (recipes) => set({ recipes }),
 }));
 
