@@ -1,5 +1,5 @@
 // FavoritesList.jsx
-import { useRecipeStore } from "../Store/recipeStore";
+import { useRecipeStore } from "./recipeStore";
 
 const FavoritesList = () => {
   const recipes = useRecipeStore((state) => state.recipes);

@@ -1,5 +1,5 @@
 // SearchBar.jsx
-import { useRecipeStore } from "../Store/recipeStore";
+import { useRecipeStore } from "./recipeStore";
 
 const SearchBar = () => {
   const setSearchTerm = useRecipeStore((state) => state.setSearchTerm);
