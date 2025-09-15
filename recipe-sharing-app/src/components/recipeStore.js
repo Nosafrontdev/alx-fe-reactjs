@@ -2,13 +2,30 @@
 import create from "zustand";
 
 const useRecipeStore = create((set) => ({
+  // --- recipes state ---
   recipes: [],
+  setRecipes: (recipes) => set({ recipes }),
 
   // --- search state ---
   searchTerm: "",
   setSearchTerm: (term) => set({ searchTerm: term }),
 
-  // --- actions ---
+  // --- favorites state ---
+  favorites: [],
+  addFavorite: (recipe) =>
+    set((state) => ({
+      favorites: [...state.favorites, recipe],
+    })),
+  removeFavorite: (id) =>
+    set((state) => ({
+      favorites: state.favorites.filter((recipe) => recipe.id !== id),
+    })),
+
+  // --- recommendations state ---
+  recommendations: [],
+  setRecommendations: (recommendations) => set({ recommendations }),
+
+  // --- actions for recipes ---
   addRecipe: (newRecipe) =>
     set((state) => ({
       recipes: [...state.recipes, newRecipe],
@@ -25,8 +42,6 @@ const useRecipeStore = create((set) => ({
     set((state) => ({
       recipes: state.recipes.filter((recipe) => recipe.id !== id),
     })),
-
-  setRecipes: (recipes) => set({ recipes }),
 }));
 
 export default useRecipeStore;
