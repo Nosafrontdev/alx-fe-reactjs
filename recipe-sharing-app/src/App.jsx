@@ -8,7 +8,7 @@ import RecommendationsList from "./components/RecommendationsList";
 
 function App() {
   return (
-    <Router>
+    
       <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
         <h1>Recipe App</h1>
         <SearchBar />
@@ -21,7 +21,7 @@ function App() {
           <Route path="/recommendations" element={<RecommendationsList />} />
         </Routes>
       </div>
-    </Router>
+    
   );
 }
 
