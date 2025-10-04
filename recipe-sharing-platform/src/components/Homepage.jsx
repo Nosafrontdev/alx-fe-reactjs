@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-function Homepage() {
+function HomePage() {
     const [data, setData] = useState([]);
     const [error, setError] = useState("");
 
@@ -48,4 +48,4 @@ function Homepage() {
   );
 }
 
-export default Homepage;
+export default HomePage;
