@@ -1,53 +1,72 @@
-import { useEffect, useState } from "react";
-function HomePage() {
-    const [data, setData] = useState([]);
-    const [error, setError] = useState("");
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 
-    useEffect(() => {
-        fetch('src/data.json')
-        .then((response)=> {
-            if (!response.ok){
-                throw new Error('failed to fetch data');
-            }
-            return response.json();
-        })
-     .then ((data) => setData(data))
-     .catch((error)=> {
-        setError(`Error loading data: ${error.message}`);
-     }
-    );
-    },[]);
+export default function RecipeDetail() {
+  const { id } = useParams();
+  const [recipe, setRecipe] = useState(null);
 
-    return ( 
-        <div className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8 text-center">Recipe Fetcher</h1>
+  // Load recipe dynamically from data.json
+  useEffect(() => {
+    fetch("/src/data.json")
+      .then((res) => res.json())
+      .then((data) => {
+        const foundRecipe = data.find((r) => r.id === parseInt(id));
+        setRecipe(foundRecipe);
+      })
+      .catch((err) => console.error("Error loading recipe:", err));
+  }, [id]);
 
-      {error && <p className="text-red-600 mb-4">{error}</p>}
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-        {data.map((item) => (
-          <div 
-            key={item.id} 
-            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
-          >
-            {item.image && (
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-48 object-cover"
-              />
-            )}
-            <div className="p-4">
-              <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
-              <p className="text-gray-700 text-sm">{item.summary}</p>
-            </div>
-          </div>
-        ))}
+  if (!recipe) {
+    return (
+      <div className="p-6 text-center text-gray-500">
+        Recipe not found or loading...
+        <div>
+          <Link to="/" className="text-blue-500 hover:underline">
+            ← Back to Home
+          </Link>
+        </div>
       </div>
-    </div>
- 
-
     );
-}
+  }
 
-export default HomePage;
+  return (
+    <div className="min-h-screen bg-gray-50 p-6">
+      <Link to="/" className="inline-block mb-6 text-blue-500 hover:underline">
+        ← Back to Home
+      </Link>
+
+      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+        <img
+          src={recipe.image}
+          alt={recipe.title}
+          className="w-full h-64 object-cover rounded-lg mb-6"
+        />
+
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">{recipe.title}</h1>
+        <p className="text-gray-700 mb-6">{recipe.summary}</p>
+
+        {recipe.ingredients && (
+          <section className="mb-6">
+            <h2 className="text-2xl font-semibold mb-2">Ingredients</h2>
+            <ul className="list-disc list-inside text-gray-700">
+              {recipe.ingredients.map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {recipe.instructions && (
+          <section>
+            <h2 className="text-2xl font-semibold mb-2">Instructions</h2>
+            <ol className="list-decimal list-inside text-gray-700">
+              {recipe.instructions.map((step, idx) => (
+                <li key={idx} className="mb-2">{step}</li>
+              ))}
+            </ol>
+          </section>
+        )}
+      </div>
+    </div>
+  );
+}
