@@ -24,7 +24,7 @@ function HomePage() {
 
       {error && <p className="text-red-600 mb-4">{error}</p>}
 
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
         {data.map((item) => (
           <div 
             key={item.id} 
