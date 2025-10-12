@@ -2,16 +2,17 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 function FormikForm() {
-  // Validation schema using Yup
+  // Define validation schema using Yup
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is required"),
     email: Yup.string().email("Invalid email format").required("Email is required"),
     password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
   });
 
-  // Simulate API call
+  // Simulate an API call
   const handleSubmit = (values, { setSubmitting, resetForm, setStatus }) => {
-    console.log("Form submitted:", values);
+    console.log("Formik form submitted:", values);
+
     setTimeout(() => {
       setStatus({ success: "User registered successfully!" });
       resetForm();
