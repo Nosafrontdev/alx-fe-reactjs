@@ -95,4 +95,4 @@ const styles = {
   },
 };
 
-export default FormikForm;
+export default formikForm;
