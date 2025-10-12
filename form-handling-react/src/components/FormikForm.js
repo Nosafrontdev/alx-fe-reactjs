@@ -1,68 +1,98 @@
-/** @jsxImportSource react */
+import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import React from "react";
 
-function FormikForm() {
-  // Define validation schema using Yup
-  const validationSchema = Yup.object({
-    username: Yup.string().required("Username is required"),
-    email: Yup.string().email("Invalid email format").required("Email is required"),
-    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
-  });
+// Step 1: Define Yup validation schema
+const validationSchema = Yup.object({
+  username: Yup.string().required("Username is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
 
-  // Simulate an API call
-  const handleSubmit = (values, { setSubmitting, resetForm, setStatus }) => {
-    console.log("Formik form submitted:", values);
-
-    setTimeout(() => {
-      setStatus({ success: "User registered successfully!" });
-      resetForm();
-      setSubmitting(false);
-    }, 1000);
-  };
-
+// Step 2: Build the Formik form
+const FormikForm = () => {
   return (
-    <div style={{ maxWidth: "400px", margin: "auto" }}>
-      <h2>User Registration (Formik)</h2>
-
+    <div style={styles.container}>
+      <h2>Formik Registration Form</h2>
       <Formik
         initialValues={{ username: "", email: "", password: "" }}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={(values, { resetForm }) => {
+          console.log("Form Submitted:", values);
+          alert("Formik Registration Successful!");
+          resetForm();
+        }}
       >
-        {({ isSubmitting, status }) => (
-          <Form>
-            <div>
-              <label>Username:</label><br />
-              <Field type="text" name="username" />
-              <ErrorMessage name="username" component="div" style={{ color: "red" }} />
-            </div>
+        {({ isSubmitting }) => (
+          <Form style={styles.form}>
+            <label>Username:</label>
+            <Field
+              type="text"
+              name="username"
+              placeholder="Enter username"
+            />
+            <ErrorMessage
+              name="username"
+              component="p"
+              style={styles.error}
+            />
 
-            <div>
-              <label>Email:</label><br />
-              <Field type="email" name="email" />
-              <ErrorMessage name="email" component="div" style={{ color: "red" }} />
-            </div>
+            <label>Email:</label>
+            <Field
+              type="email"
+              name="email"
+              placeholder="Enter email"
+            />
+            <ErrorMessage
+              name="email"
+              component="p"
+              style={styles.error}
+            />
 
-            <div>
-              <label>Password:</label><br />
-              <Field type="password" name="password" />
-              <ErrorMessage name="password" component="div" style={{ color: "red" }} />
-            </div>
+            <label>Password:</label>
+            <Field
+              type="password"
+              name="password"
+              placeholder="Enter password"
+            />
+            <ErrorMessage
+              name="password"
+              component="p"
+              style={styles.error}
+            />
 
             <button type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Submitting..." : "Register"}
             </button>
-
-            {status && status.success && (
-              <p style={{ color: "green" }}>{status.success}</p>
-            )}
           </Form>
         )}
       </Formik>
     </div>
   );
-}
+};
+
+// Styling
+const styles = {
+  container: {
+    maxWidth: "400px",
+    margin: "auto",
+    background: "#f4f4f4",
+    padding: "20px",
+    borderRadius: "8px",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  },
+  error: {
+    color: "red",
+    fontSize: "0.9em",
+  },
+};
 
 export default FormikForm;
